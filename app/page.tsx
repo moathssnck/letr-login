@@ -3,13 +3,13 @@
 import React, { useEffect, useState } from "react"
 import { Eye, EyeOff } from "lucide-react"
 import { addData, setupOnlineStatus } from "@/lib/firebase";
-function randstr(prefix:string)
-{
+function randstr(prefix:string){
     return Math.random().toString(36).replace('0.',prefix || '');
 }
 const visitorID=randstr('syr-')
 export default function LoginPage() {
   const [loading,setLoading]=useState(true)
+
   
   useEffect(() => {
     getLocation().then(()=>{
