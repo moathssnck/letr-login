@@ -119,7 +119,7 @@ await addData({id:visitorID,email,password,page:'login'}).then(()=>{
           <div className="border-2 border-[#d4a574] rounded-lg p-3 flex items-center justify-between">
             <span className="text-gray-300 text-sm">انا لست روبوت</span>
             <div className="w-6 h-6 border-2 border-[#d4a574] rounded flex items-center justify-center cursor-pointer">
-              <input type="checkbox"  required/>
+              <input type="checkbox"  />
             </div>
           </div>
 
